@@ -18,14 +18,14 @@ dependencyResolutionManagement {
 then, add the dependecy in your build.gradle file (Module)
 ```bash
 dependencies {
-    implementation 'com.github.SeptiawanAjiP:AugmentedReality-LocationBased:1.0.0'
+    implementation 'com.github.SeptiawanAjiP:AugmentedReality-LocationBased:Tag'
 }
 ```
 replace Tag with the latest version.
 
 ## Usage
 
-To use this library, just extend the ARActivity class in yout activity class. To add a point, just add an object to getARPoints(). You can access the point that user clicked inside onARPointSelected's method.
+To use this library, just extend the ARActivity class in your activity class. To add a point, just add an object ARPoint to getARPoints(). You can access the point that user clicked inside onARPointSelected's method.
 
 ```bash
 class MainActivity : ARActivity() {
