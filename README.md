@@ -5,7 +5,27 @@ AUF-AR is an Android library for displaying Location Based Augmented Reality fea
 
 ## Installation
 
-To use this library, just extend the ARActivity class in yout activity class. To add a point, just add an object to getARPoints(). You can access the point inside onARPointSelected's method.
+Use Gradle. Add it in your settings.gradle at the end of repositories:
+
+```bash
+dependencyResolutionManagement {
+    repositories {
+        ....
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+then, add the dependecy in your build.gradle file (Module)
+```bash
+dependencies {
+    implementation 'com.github.SeptiawanAjiP:AugmentedReality-LocationBased:Tag'
+}
+```
+replace Tag with the latest version.
+
+## Usage
+
+To use this library, just extend the ARActivity class in your activity class. To add a point, just add an object ARPoint to getARPoints(). You can access the point that user clicked inside onARPointSelected's method.
 
 ```bash
 class MainActivity : ARActivity() {
