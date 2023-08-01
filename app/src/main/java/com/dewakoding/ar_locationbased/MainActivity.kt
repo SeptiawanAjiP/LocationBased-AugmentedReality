@@ -10,8 +10,8 @@ class MainActivity : ARActivity() {
         super.onCreate(savedInstanceState)
         val currentARPoints = getARPoints()
         currentARPoints.clear()
-        currentARPoints.add(ARPoint("MONAS", -6.175311688689925, 106.82604761289097))
-        currentARPoints.add(ARPoint("TMII",  -6.304430001834124, 106.89161623298563))
+        currentARPoints.add(ARPoint("Coffee Shop", -6.175311688689925, 106.82604761289097))
+        currentARPoints.add(ARPoint("Restaurant",  -6.304430001834124, 106.89161623298563))
 
     }
 

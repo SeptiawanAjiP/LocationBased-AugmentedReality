@@ -1,5 +1,5 @@
 # AUF-AR
-![video](https://raw.githubusercontent.com/SeptiawanAjiP/AugmentedReality-LocationBased/master/video.gif)
+![video](https://raw.githubusercontent.com/SeptiawanAjiP/AugmentedReality-LocationBased/master/video.mp4)
 
 AUF-AR is an Android library for displaying Location Based Augmented Reality features. This library is the result of a modification of [this app](https://github.com/dat-ng/ar-location-based-android) made by Mr dat-ng. (Thanks to Mr dat-ng, for creating this amazing app)
 
@@ -13,8 +13,8 @@ class MainActivity : ARActivity() {
         super.onCreate(savedInstanceState)
         val currentARPoints = getARPoints()
         currentARPoints.clear()
-        currentARPoints.add(ARPoint("MONAS", -6.175311688689925, 106.82604761289097))
-        currentARPoints.add(ARPoint("TMII",  -6.304430001834124, 106.89161623298563))
+        currentARPoints.add(ARPoint("Coffee Shop", -6.175311688689925, 106.82604761289097))
+        currentARPoints.add(ARPoint("Restaurant",  -6.304430001834124, 106.89161623298563))
     }
 
     override fun onARPointSelected(arPoint: ARPoint) {

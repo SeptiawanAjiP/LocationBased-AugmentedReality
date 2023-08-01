@@ -43,7 +43,6 @@ class AROverlayView constructor(activity: Activity, val arPoints: MutableList<AR
                         }
                     }
                 }
-
                 else -> {}
             }
         }
