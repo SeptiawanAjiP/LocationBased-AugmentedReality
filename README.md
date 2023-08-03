@@ -31,14 +31,16 @@ To use this library, just extend the ARActivity class in your activity class. To
 class MainActivity : ARActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val currentARPoints = getARPoints()
+        val currentARPoints = getARLocations()
         currentARPoints.clear()
-         currentARPoints.add(ARPoint("Coffee Shop", -6.174870735058176, 106.82620041234728))
-        currentARPoints.add(ARPoint("Restaurant",  -6.122310891453182, 106.83357892611079))
+
+        currentARPoints.add(Place("1", "Coffee Shop", -6.174870735058176, 106.82620041234728, description = "Promotion available here"))
+        currentARPoints.add(Place("2", "Restaurant", -6.122310891453182, 106.83357892611079, description = "Good Resto"))
+
     }
 
-    override fun onARPointSelected(arPoint: ARPoint) {
-        Toast.makeText(applicationContext, arPoint.name, Toast.LENGTH_SHORT).show()
+    override fun onARPointSelected(place: Place) {
+        Toast.makeText(applicationContext, place.name, Toast.LENGTH_SHORT).show()
     }
 }
 ```
