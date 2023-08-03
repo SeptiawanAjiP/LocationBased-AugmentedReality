@@ -18,6 +18,10 @@ dependencyResolutionManagement {
 then, add the dependecy in your build.gradle file (Module)
 ```bash
 dependencies {
+    // to handle permission request
+    implementation 'pub.devrel:easypermissions:3.0.0'
+    
+    // AUF-AR library
     implementation 'com.github.SeptiawanAjiP:AugmentedReality-LocationBased:Tag'
 }
 ```
@@ -25,7 +29,7 @@ replace Tag with the latest version.
 
 ## Usage
 
-To use this library, just extend the ARActivity class in your activity class. To add a point, just add an object ARPoint to getARPoints(). You can access the point that user clicked inside onARPointSelected's method.
+To use this library, just extend the ARActivity class in your activity class. To add a point, just add an object ARPoint to getARLocations(). You can access the point that user clicked inside onARPointSelected's method.
 
 ```bash
 class MainActivity : ARActivity() {
