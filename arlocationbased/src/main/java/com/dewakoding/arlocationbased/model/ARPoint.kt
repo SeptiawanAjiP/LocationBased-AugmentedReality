@@ -3,14 +3,14 @@ package com.dewakoding.arlocationbased.model
 import android.location.Location
 
 
-class ARPoint(name: String, lat: Double, lon: Double, x: Float? = null, y: Float? = null, altitude: Double? = null) {
+open class ARPoint(id: String, lat: Double, lon: Double, x: Float? = null, y: Float? = null) {
     var location: Location
-    var name: String
+    var id: String
     var x: Float?
     var y: Float?
 
     init {
-        this.name = name
+        this.id = id
         location = Location("ARPoint")
         location.latitude = lat
         location.longitude = lon
@@ -23,6 +23,6 @@ class ARPoint(name: String, lat: Double, lon: Double, x: Float? = null, y: Float
     }
 
     fun getNamePoint(): String {
-        return name
+        return id
     }
 }

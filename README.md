@@ -33,8 +33,8 @@ class MainActivity : ARActivity() {
         super.onCreate(savedInstanceState)
         val currentARPoints = getARPoints()
         currentARPoints.clear()
-        currentARPoints.add(ARPoint("Coffee Shop", -6.175311688689925, 106.82604761289097))
-        currentARPoints.add(ARPoint("Restaurant",  -6.304430001834124, 106.89161623298563))
+         currentARPoints.add(ARPoint("Coffee Shop", -6.174870735058176, 106.82620041234728))
+        currentARPoints.add(ARPoint("Restaurant",  -6.122310891453182, 106.83357892611079))
     }
 
     override fun onARPointSelected(arPoint: ARPoint) {

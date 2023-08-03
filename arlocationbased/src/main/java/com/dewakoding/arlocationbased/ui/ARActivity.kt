@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat
 import com.dewakoding.arlocationbased.databinding.ActivityCameraBinding
 import com.dewakoding.arlocationbased.listener.PointClickListener
 import com.dewakoding.arlocationbased.model.ARPoint
+import com.dewakoding.arlocationbased.model.Place
 import com.dewakoding.arlocationbased.util.CameraUtility
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -47,11 +48,10 @@ website : dewakoding.com
 typealias LumaListener = (luma: Double) -> Unit
 open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbacks, SensorEventListener, LocationListener{
     companion object {
-        private var arPointSelected: ARPoint? = null
-        var arPointList: MutableList<ARPoint> = mutableListOf()
+        var places: MutableList<Place> = mutableListOf()
 
-        fun getARPoints(): MutableList<ARPoint> {
-            return arPointList
+        fun getARLocations(): MutableList<Place> {
+            return places
         }
     }
 
@@ -70,10 +70,10 @@ open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        arOverlayView = AROverlayView(this, getARPoints(), pointClickListener =  object :
+        arOverlayView = AROverlayView(this, places, pointClickListener =  object :
             PointClickListener {
-            override fun onClick(arPoint: ARPoint) {
-                onARPointSelected(arPoint)
+            override fun onClick(place: Place) {
+                onARPointSelected(place)
             }
         })
     }
@@ -290,11 +290,10 @@ open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbac
     }
 
     override fun onLocationChanged(p0: Location) {
-
         Log.d("AR-LOCATION-BASED\"", "onLocationChanged")
     }
 
-    open fun onARPointSelected(arPoint: ARPoint) {
+    open fun onARPointSelected(place: Place) {
 
     }
 

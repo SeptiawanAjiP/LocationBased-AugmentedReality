@@ -1,6 +1,6 @@
 package com.dewakoding.arlocationbased.listener
 
-import com.dewakoding.arlocationbased.model.ARPoint
+import com.dewakoding.arlocationbased.model.Place
 
 
 /**
@@ -12,5 +12,5 @@ website : dewakoding.com
 
  **/
 interface PointClickListener {
-    fun onClick(arPoint: ARPoint)
+    fun onClick(place: Place)
 }

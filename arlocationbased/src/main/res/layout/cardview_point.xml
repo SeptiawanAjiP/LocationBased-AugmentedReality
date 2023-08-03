@@ -77,7 +77,8 @@
                         android:tag="distance"
                         android:text="distance"
                         android:textColor="@android:color/black"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp"
+                        android:visibility="gone"/>
 
                     <TextView
                         android:id="@+id/poiLabelAltitude"

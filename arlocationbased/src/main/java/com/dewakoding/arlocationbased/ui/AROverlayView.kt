@@ -16,9 +16,9 @@ import com.dewakoding.arlocationbased.R
 import com.dewakoding.arlocationbased.helper.LocationHelper.ECEFtoENU
 import com.dewakoding.arlocationbased.helper.LocationHelper.WSG84toECEF
 import com.dewakoding.arlocationbased.listener.PointClickListener
-import com.dewakoding.arlocationbased.model.ARPoint
+import com.dewakoding.arlocationbased.model.Place
 
-class AROverlayView constructor(activity: Activity, val arPoints: MutableList<ARPoint>?, val icon: Int = R.drawable.place, val pointClickListener: PointClickListener):
+class AROverlayView constructor(activity: Activity, val places: MutableList<Place>?, val pointClickListener: PointClickListener):
     View(activity) {
 
     private var projectionMatrix = FloatArray(16)
@@ -72,12 +72,12 @@ class AROverlayView constructor(activity: Activity, val arPoints: MutableList<AR
             return
         }
 
-        arPoints?.let {
-            for (i in this.arPoints!!.indices) {
+        places?.let {
+            for (i in this.places!!.indices) {
                 val currentLocationInECEF = WSG84toECEF(
                     currentLocation!!
                 )
-                val pointInECEF = WSG84toECEF(arPoints?.get(i)!!.getCoordinate())
+                val pointInECEF = WSG84toECEF(places?.get(i)!!.getCoordinate())
                 val pointInENU = ECEFtoENU(currentLocation!!, currentLocationInECEF, pointInECEF)
                 val cameraCoordinateVector = FloatArray(4)
                 Matrix.multiplyMV(
@@ -94,27 +94,27 @@ class AROverlayView constructor(activity: Activity, val arPoints: MutableList<AR
                     val y =
                         (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas!!.height
 
-                    arPoints[i].x = x
-                    arPoints[i].y = y
+                    places[i].x = x
+                    places[i].y = y
 
                     if (arPointLayouts.size <= i) {
                         // Create a new AR point layout
                         val arPointCardView = LayoutInflater.from(context).inflate(R.layout.cardview_point, null)
                         val arPointIcon = arPointCardView.findViewById<ImageView>(R.id.img_status)
                         val arPointName = arPointCardView.findViewById<TextView>(R.id.tv_title)
+                        val arPointDescription = arPointCardView.findViewById<TextView>(R.id.tv_description)
 
                         // Set the AR point icon and name
                         arPointIcon.setImageResource(R.drawable.place)
-                        arPointName.text = arPoints[i].name
+                        arPointName.text = places[i].name
+                        arPointDescription.text = places[i].description
 
                         // Measure the cardview to get its actual width and height
                         arPointCardView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
-                        val cardViewWidth = arPointCardView.measuredWidth
-                        val cardViewHeight = arPointCardView.measuredHeight
 
                         // Set the click listener for the AR point layout
                         arPointCardView.setOnClickListener {
-                            pointClickListener.onClick(arPoints[i])
+                            pointClickListener.onClick(places[i])
                         }
 
                         // Add the AR point layout to the AROverlayView
@@ -141,16 +141,19 @@ class AROverlayView constructor(activity: Activity, val arPoints: MutableList<AR
                         arPointCardView.y = y
                     }
 
-                    // Update the AR point layout position
-                    val arPointLayout = arPointLayouts[i]
-                    arPointLayout.x = x
-                    arPointLayout.y = y
+                    if (arPointLayouts.size > 0) {
+                        // Update the AR point layout position
+                        val arPointLayout = arPointLayouts[i]
+                        arPointLayout.x = x
+                        arPointLayout.y = y
+                    }
+
                 }
             }
 
             // Remove any extra AR point layouts if present
-            if (arPointLayouts.size > arPoints.size) {
-                for (i in arPoints.size until arPointLayouts.size) {
+            if (arPointLayouts.size > places.size) {
+                for (i in places.size until arPointLayouts.size) {
                     val arPointLayout = arPointLayouts[i]
                     val parentView = parent as ViewGroup
                     parentView.removeView(arPointLayout)
