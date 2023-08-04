@@ -12,7 +12,7 @@ class MainActivity : ARActivity() {
         currentARPoints.clear()
 
         currentARPoints.add(Place( "1", "Coffee Shop", -6.29462263776453, 106.88430472863504, description = "Promotion available here"))
-        currentARPoints.add(Place("1", "Restaurant", -6.236549700515769, 106.89388957362365, description = "Good Resto"))
+        currentARPoints.add(Place("1", "Restaurant", -6.122310891453182, 106.83357892611079, description = "Good Resto"))
 
     }
 

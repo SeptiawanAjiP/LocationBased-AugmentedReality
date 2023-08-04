@@ -59,7 +59,7 @@
                         android:id="@+id/poiLabelIconImageView"
                         android:layout_width="48dp"
                         android:layout_height="48dp"
-                        android:layout_alignLeft="@+id/poiLabelDistance"
+                        android:layout_alignLeft="@+id/tv_distance"
                         android:layout_alignParentTop="true"
                         android:background="#ffe8e8e8"
                         android:scaleType="centerCrop"
@@ -67,7 +67,7 @@
                         android:visibility="gone" />
 
                     <TextView
-                        android:id="@+id/poiLabelDistance"
+                        android:id="@+id/tv_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_description"
@@ -77,16 +77,15 @@
                         android:tag="distance"
                         android:text="distance"
                         android:textColor="@android:color/black"
-                        android:textSize="12sp"
-                        android:visibility="gone"/>
+                        android:textSize="12sp"/>
 
                     <TextView
                         android:id="@+id/poiLabelAltitude"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/poiLabelDistance"
+                        android:layout_alignBaseline="@+id/tv_distance"
                         android:layout_alignLeft="@+id/tv_description"
-                        android:layout_alignBottom="@+id/poiLabelDistance"
+                        android:layout_alignBottom="@+id/tv_distance"
                         android:tag="altitude"
                         android:text="altitude"
                         android:textColor="@android:color/black"

@@ -94,8 +94,12 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
                     val y =
                         (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas!!.height
 
+
+
                     places[i].x = x
                     places[i].y = y
+
+                    places[i].distance = currentLocation?.distanceTo(places!!.get(i).location)!!.toDouble()
 
                     if (arPointLayouts.size <= i) {
                         // Create a new AR point layout
@@ -103,11 +107,13 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
                         val arPointIcon = arPointCardView.findViewById<ImageView>(R.id.img_status)
                         val arPointName = arPointCardView.findViewById<TextView>(R.id.tv_title)
                         val arPointDescription = arPointCardView.findViewById<TextView>(R.id.tv_description)
+                        val arPointDistance = arPointCardView.findViewById<TextView>(R.id.tv_distance)
 
                         // Set the AR point icon and name
                         arPointIcon.setImageResource(R.drawable.place)
                         arPointName.text = places[i].name
                         arPointDescription.text = places[i].description
+                        arPointDistance.text = distanceStr(currentLocation!!, places[i].location)
 
                         // Measure the cardview to get its actual width and height
                         arPointCardView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
@@ -160,6 +166,15 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
                 }
                 arPointLayouts.removeAll { true }
             }
+        }
+    }
+
+    fun distanceStr(currentLoc: Location, pointLocation: Location): String {
+        var distance = currentLoc.distanceTo(pointLocation).toDouble()
+        if (distance < 1000) {
+            return (distance.toString() + " m")
+        } else {
+            return (("%.2f".format(distance / 1000)).toString() + " km")
         }
     }
 }
