@@ -11,8 +11,8 @@ class MainActivity : ARActivity() {
         val currentARPoints = getARLocations()
         currentARPoints.clear()
 
-        currentARPoints.add(Place( "1", "Coffee Shop", -6.29462263776453, 106.88430472863504, description = "Promotion available here"))
-        currentARPoints.add(Place("1", "Restaurant", -6.122310891453182, 106.83357892611079, description = "Good Resto"))
+        currentARPoints.add(Place("1", "Coffee Shop", -6.174870735058176, 106.82620041234728, description = "Promotion available here"))
+        currentARPoints.add(Place("2", "Restaurant", -6.122310891453182, 106.83357892611079, description = "Good Resto"))
 
     }
 

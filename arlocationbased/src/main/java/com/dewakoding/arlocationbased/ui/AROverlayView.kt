@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.hardware.SensorManager
 import android.location.Location
 import android.opengl.Matrix
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -72,6 +73,8 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
             return
         }
 
+
+        val initialLayoutsSize = arPointLayouts.size
         places?.let {
             for (i in this.places!!.indices) {
                 val currentLocationInECEF = WSG84toECEF(
@@ -93,8 +96,6 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
                         (0.5f + cameraCoordinateVector[0] / cameraCoordinateVector[3]) * canvas!!.width
                     val y =
                         (0.5f - cameraCoordinateVector[1] / cameraCoordinateVector[3]) * canvas!!.height
-
-
 
                     places[i].x = x
                     places[i].y = y
@@ -148,10 +149,13 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
                     }
 
                     if (arPointLayouts.size > 0) {
-                        // Update the AR point layout position
-                        val arPointLayout = arPointLayouts[i]
-                        arPointLayout.x = x
-                        arPointLayout.y = y
+                        if (i < arPointLayouts.size) {
+                            // Update the AR point layout position
+                            val arPointLayout = arPointLayouts[i]
+                            arPointLayout.x = x
+                            arPointLayout.y = y
+                        }
+
                     }
 
                 }
@@ -159,8 +163,8 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
 
             // Remove any extra AR point layouts if present
             if (arPointLayouts.size > places.size) {
-                for (i in places.size until arPointLayouts.size) {
-                    val arPointLayout = arPointLayouts[i]
+                for (x in places.size until arPointLayouts.size) {
+                    val arPointLayout = arPointLayouts[x]
                     val parentView = parent as ViewGroup
                     parentView.removeView(arPointLayout)
                 }
