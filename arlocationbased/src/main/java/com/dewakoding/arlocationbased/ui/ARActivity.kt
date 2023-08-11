@@ -22,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.dewakoding.arlocationbased.databinding.ActivityCameraBinding
 import com.dewakoding.arlocationbased.listener.PointClickListener
-import com.dewakoding.arlocationbased.model.ARPoint
 import com.dewakoding.arlocationbased.model.Place
 import com.dewakoding.arlocationbased.util.CameraUtility
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -47,13 +46,8 @@ website : dewakoding.com
  **/
 typealias LumaListener = (luma: Double) -> Unit
 open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbacks, SensorEventListener, LocationListener{
-    companion object {
-        var places: MutableList<Place> = mutableListOf()
 
-        fun getARLocations(): MutableList<Place> {
-            return places
-        }
-    }
+    private lateinit var places: MutableList<Place>
 
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
@@ -61,6 +55,21 @@ open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbac
     private val binding by lazy { ActivityCameraBinding.inflate(layoutInflater) }
     private var arOverlayView: AROverlayView? = null
     private lateinit var fusedLocationProvider: FusedLocationProviderClient
+
+    fun ARInitData(places: MutableList<Place>) {
+        this.places = places
+
+        initView()
+    }
+
+    private fun initView() {
+        arOverlayView = AROverlayView(this, places, pointClickListener =  object :
+            PointClickListener {
+            override fun onClick(place: Place) {
+                onARPointSelected(place)
+            }
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,12 +79,7 @@ open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbac
 
         cameraExecutor = Executors.newSingleThreadExecutor()
 
-        arOverlayView = AROverlayView(this, places, pointClickListener =  object :
-            PointClickListener {
-            override fun onClick(place: Place) {
-                onARPointSelected(place)
-            }
-        })
+
     }
 
     override fun onResume() {
