@@ -29,7 +29,7 @@ replace Tag with the latest version.
 
 ## Usage
 
-To use this library, just extend the ARActivity class in your activity class. To add a point, just add an object ARPoint to getARLocations(). You can access the point that user clicked inside onARPointSelected's method.
+To use this library, just extend the ARActivity class in your activity class. To add points, just make ArrayList of Place, and call ARInitData with ArrayList of Place as the parameter. You can access the point that user clicked inside onARPointSelected's method.
 
 ```bash
 class MainActivity : ARActivity() {
