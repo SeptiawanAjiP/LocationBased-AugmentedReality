@@ -22,7 +22,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     
     // AUF-AR library
-    implementation 'com.github.SeptiawanAjiP:AugmentedReality-LocationBased:Tag'
+    implementation 'com.github.SeptiawanAjiP:LocationBased-AugmentedReality:Tag'
 }
 ```
 replace Tag with the latest version.
