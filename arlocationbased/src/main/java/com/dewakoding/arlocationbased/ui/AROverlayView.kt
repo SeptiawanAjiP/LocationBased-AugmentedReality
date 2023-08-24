@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.hardware.SensorManager
 import android.location.Location
 import android.opengl.Matrix
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.dewakoding.arlocationbased.helper.LocationHelper.WSG84toECEF
 import com.dewakoding.arlocationbased.listener.PointClickListener
 import com.dewakoding.arlocationbased.model.Place
 
-class AROverlayView constructor(activity: Activity, val places: MutableList<Place>?, val pointClickListener: PointClickListener):
+class AROverlayView constructor(activity: Activity, val places: MutableList<Place>?, val radiusInMeter: Double, val pointClickListener: PointClickListener):
     View(activity) {
 
     private var projectionMatrix = FloatArray(16)
@@ -72,9 +71,6 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
         if (currentLocation == null) {
             return
         }
-
-
-        val initialLayoutsSize = arPointLayouts.size
         places?.let {
             for (i in this.places!!.indices) {
                 val currentLocationInECEF = WSG84toECEF(
@@ -99,65 +95,65 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
 
                     places[i].x = x
                     places[i].y = y
+                    places[i].distance = distance(currentLocation!!, places!!.get(i).location)
 
-                    places[i].distance = currentLocation?.distanceTo(places!!.get(i).location)!!.toDouble()
+                    if (radiusInMeter != null && places[i].distance!! <= radiusInMeter) {
 
-                    if (arPointLayouts.size <= i) {
-                        // Create a new AR point layout
-                        val arPointCardView = LayoutInflater.from(context).inflate(R.layout.cardview_point, null)
-                        val arPointIcon = arPointCardView.findViewById<ImageView>(R.id.img_status)
-                        val arPointName = arPointCardView.findViewById<TextView>(R.id.tv_title)
-                        val arPointDescription = arPointCardView.findViewById<TextView>(R.id.tv_description)
-                        val arPointDistance = arPointCardView.findViewById<TextView>(R.id.tv_distance)
+                        if (arPointLayouts.size <= i) {
+                            // Create a new AR point layout
+                            val arPointCardView = LayoutInflater.from(context).inflate(R.layout.cardview_point, null)
+                            val arPointIcon = arPointCardView.findViewById<ImageView>(R.id.img_status)
+                            val arPointName = arPointCardView.findViewById<TextView>(R.id.tv_title)
+                            val arPointDescription = arPointCardView.findViewById<TextView>(R.id.tv_description)
+                            val arPointDistance = arPointCardView.findViewById<TextView>(R.id.tv_distance)
 
-                        // Set the AR point icon and name
-                        arPointIcon.setImageResource(R.drawable.place)
-                        arPointName.text = places[i].name
-                        arPointDescription.text = places[i].description
-                        arPointDistance.text = distanceStr(currentLocation!!, places[i].location)
+                            // Set the AR point icon and name
+                            arPointIcon.setImageResource(R.drawable.place)
+                            arPointName.text = places[i].name
+                            arPointDescription.text = places[i].description
+                            arPointDistance.text = distanceStr(places[i].distance!!.toDouble())
 
-                        // Measure the cardview to get its actual width and height
-                        arPointCardView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+                            // Measure the cardview to get its actual width and height
+                            arPointCardView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
 
-                        // Set the click listener for the AR point layout
-                        arPointCardView.setOnClickListener {
-                            pointClickListener.onClick(places[i])
-                        }
+                            // Set the click listener for the AR point layout
+                            arPointCardView.setOnClickListener {
+                                pointClickListener.onClick(places[i])
+                            }
 
-                        // Add the AR point layout to the AROverlayView
-                        val parentView = parent as ViewGroup
-                        if (parentView != null) {
-                            parentView.addView(arPointCardView)
-                        }
+                            // Add the AR point layout to the AROverlayView
+                            val parentView = parent as ViewGroup
+                            if (parentView != null) {
+                                parentView.addView(arPointCardView)
+                            }
 
-                        // Save the current AR point layout reference
-                        arPointLayouts.add(arPointCardView)
+                            // Save the current AR point layout reference
+                            arPointLayouts.add(arPointCardView)
 
-                        // Update the AR point layout position
-                        val arPointCardViewLayoutParams = FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.WRAP_CONTENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
-                        )
-                        arPointCardViewLayoutParams.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
-                        arPointCardView.layoutParams = arPointCardViewLayoutParams
-
-                        val marginInPixels = resources.getDimensionPixelSize(R.dimen.margin)
-                        arPointCardViewLayoutParams.setMargins(0, marginInPixels, 0, 0)
-
-                        arPointCardView.x = x
-                        arPointCardView.y = y
-                    }
-
-                    if (arPointLayouts.size > 0) {
-                        if (i < arPointLayouts.size) {
                             // Update the AR point layout position
-                            val arPointLayout = arPointLayouts[i]
-                            arPointLayout.x = x
-                            arPointLayout.y = y
+                            val arPointCardViewLayoutParams = FrameLayout.LayoutParams(
+                                ViewGroup.LayoutParams.WRAP_CONTENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT
+                            )
+                            arPointCardViewLayoutParams.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+                            arPointCardView.layoutParams = arPointCardViewLayoutParams
+
+                            val marginInPixels = resources.getDimensionPixelSize(R.dimen.margin)
+                            arPointCardViewLayoutParams.setMargins(0, marginInPixels, 0, 0)
+
+                            arPointCardView.x = x
+                            arPointCardView.y = y
                         }
+                        if (arPointLayouts.size > 0) {
+                            if (i < arPointLayouts.size) {
+                                // Update the AR point layout position
+                                val arPointLayout = arPointLayouts[i]
+                                arPointLayout.x = x
+                                arPointLayout.y = y
+                            }
 
+                        }
                     }
-
                 }
             }
 
@@ -173,12 +169,20 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
         }
     }
 
-    fun distanceStr(currentLoc: Location, pointLocation: Location): String {
-        var distance = currentLoc.distanceTo(pointLocation).toDouble()
+
+
+    fun distance(currentLoc: Location, pointLocation: Location): Float {
+        return currentLoc.distanceTo(pointLocation)
+
+    }
+
+    fun distanceStr(distance: Double): String {
         if (distance < 1000) {
-            return (distance.toString() + " m")
+            return (("%.2f".format(distance)).toString() + " m")
         } else {
             return (("%.2f".format(distance / 1000)).toString() + " km")
         }
     }
+
+
 }

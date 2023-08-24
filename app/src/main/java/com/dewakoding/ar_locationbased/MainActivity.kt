@@ -17,7 +17,7 @@ class MainActivity : ARActivity() {
             Place("2", "Restaurant", -6.122310891453182, 106.83357892611079, description = "Good Resto")
         )
 
-        ARInitData(list)
+        ARInitData(list, 50.00)
 
     }
 

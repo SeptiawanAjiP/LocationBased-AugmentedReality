@@ -29,7 +29,7 @@ replace Tag with the latest version.
 
 ## Usage
 
-To use this library, just extend the ARActivity class in your activity class. To add points, just make ArrayList of Place, and call ARInitData with ArrayList of Place as the parameter. You can access the point that user clicked inside onARPointSelected's method.
+To use this library, just extend the ARActivity class in your activity class. To add points, just make ArrayList of Place, and call ARInitData with ArrayList of Place as the parameter. You must add radius (in meter) as parameter too. You can access the point that user clicked inside onARPointSelected's method.
 
 ```bash
 class MainActivity : ARActivity() {
@@ -43,8 +43,8 @@ class MainActivity : ARActivity() {
         list.add(
             Place("2", "Restaurant", -6.122310891453182, 106.83357892611079, description = "Good Resto")
         )
-
-        ARInitData(list)
+        // You want to display places within a radius of 50 meters.
+        ARInitData(list, 50.00)
     }
 
     override fun onARPointSelected(place: Place) {
@@ -52,3 +52,8 @@ class MainActivity : ARActivity() {
     }
 }
 ```
+## ToDo
+- [x] Filter Place with radius of distance
+- [ ] Load url image on cardview
+- [ ] Customize the cardview form
+

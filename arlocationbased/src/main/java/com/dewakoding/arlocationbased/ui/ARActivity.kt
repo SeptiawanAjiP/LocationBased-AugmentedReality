@@ -48,6 +48,7 @@ typealias LumaListener = (luma: Double) -> Unit
 open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbacks, SensorEventListener, LocationListener{
 
     private lateinit var places: MutableList<Place>
+    private var radiusInMeter: Double = 100.0
 
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
@@ -56,14 +57,14 @@ open class ARActivity() : AppCompatActivity(), EasyPermissions.PermissionCallbac
     private var arOverlayView: AROverlayView? = null
     private lateinit var fusedLocationProvider: FusedLocationProviderClient
 
-    fun ARInitData(places: MutableList<Place>) {
+    fun ARInitData(places: MutableList<Place>, radiusInMeter: Double) {
         this.places = places
-
+        this.radiusInMeter = radiusInMeter
         initView()
     }
 
     private fun initView() {
-        arOverlayView = AROverlayView(this, places, pointClickListener =  object :
+        arOverlayView = AROverlayView(this, places, radiusInMeter, pointClickListener =  object :
             PointClickListener {
             override fun onClick(place: Place) {
                 onARPointSelected(place)
