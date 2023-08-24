@@ -22,7 +22,7 @@ dependencies {
     implementation 'pub.devrel:easypermissions:3.0.0'
     
     // AUF-AR library
-    implementation 'com.github.SeptiawanAjiP:LocationBased-AugmentedReality:Tag'
+    implementation 'com.github.SeptiawanAjiP:AugmentedReality-LocationBased:Tag'
 }
 ```
 replace Tag with the latest version.
@@ -56,4 +56,3 @@ class MainActivity : ARActivity() {
 - [x] Filter Place with radius of distance
 - [ ] Load url image on cardview
 - [ ] Customize the cardview form
-
