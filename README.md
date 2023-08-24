@@ -55,4 +55,4 @@ class MainActivity : ARActivity() {
 ## ToDo
 - [x] Filter Place with radius of distance
 - [ ] Load url image on cardview
-- [ ] Customize the cardview form
+- [ ] Customize the cardview
