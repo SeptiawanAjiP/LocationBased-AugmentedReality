@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import com.bumptech.glide.Glide
 import com.dewakoding.arlocationbased.R
 import com.dewakoding.arlocationbased.helper.LocationHelper.ECEFtoENU
 import com.dewakoding.arlocationbased.helper.LocationHelper.WSG84toECEF
@@ -101,14 +102,23 @@ class AROverlayView constructor(activity: Activity, val places: MutableList<Plac
 
                         if (arPointLayouts.size <= i) {
                             // Create a new AR point layout
-                            val arPointCardView = LayoutInflater.from(context).inflate(R.layout.cardview_point, null)
+
+                            val arPointCardView = LayoutInflater.from(context).inflate(R.layout.cardview_point_with_image, null)
+
                             val arPointIcon = arPointCardView.findViewById<ImageView>(R.id.img_status)
                             val arPointName = arPointCardView.findViewById<TextView>(R.id.tv_title)
                             val arPointDescription = arPointCardView.findViewById<TextView>(R.id.tv_description)
                             val arPointDistance = arPointCardView.findViewById<TextView>(R.id.tv_distance)
 
-                            // Set the AR point icon and name
-                            arPointIcon.setImageResource(R.drawable.place)
+                            // Set the AR point image
+                            if (places[i].photoUrl != null) {
+                                arPointIcon.visibility = VISIBLE
+                                Glide.with(this)
+                                    .load(places[i].photoUrl)
+                                    .into(arPointIcon)
+                            }
+
+                            // Set the AR point detail
                             arPointName.text = places[i].name
                             arPointDescription.text = places[i].description
                             arPointDistance.text = distanceStr(places[i].distance!!.toDouble())
